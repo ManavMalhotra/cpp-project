@@ -26,7 +26,7 @@ public:
    }  
 };
 
-class goals : protected virtual Information{
+class goals : protected Information{
   protected:
     float mutual_funds_return_percentage;
     int number_of_years;
