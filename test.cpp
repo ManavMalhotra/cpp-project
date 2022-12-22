@@ -1,76 +1,113 @@
 #include<iostream.h>
 #include<conio.h>
+#include<math.h>
 
-class Information{
+class client{
   protected:
-    char name[];
+    char name[20];
     int age;
-    float salary;
-    float savings;
-    float investment_goals;
-    int risk_tolerance;
-    // 1-10 where 1 is low risk low return and vice versa
-public:
-   void getInfo(){
-    cout <<"\n"<< "Enter Name: ";
-    cin >> name;
-    cout <<"\n"<< "Enter Age: ";
-    cin >> age;
-    cout <<"\n"<< "Enter Salary: ";
-    cin >> salary;
-    cout <<"\n"<< "Enter Your Savings: ";
-    cin >> savings;
-    cout <<"\n"<< "Your Risk Tolerance: ";
-    cin >> risk_tolerance;
-
-   }  
-};
-
-class goals : protected Information{
-  protected:
-    float mutual_funds_return_percentage;
-    int number_of_years;
+    int risk;
+    long long assets;
   public:
-    int goal;
-    void getGoals(){
-      number_of_years = 10;
-      cout << "******Your Goal*******"<<"\n";
-      cout << "Enter Goal: "<<"\n";
-      cout << "1. High Risk High Return "<<"\n";
-      cout << "2. Medium Risk Medium Return "<<"\n";
-      cout << "3. Low Risk Low Return "<<"\n";
-      cin >> goal;
+    
+    void getdata()
+    {
+      cout<<"Enter name of client: ";
+      cin>>name;
+      cout<<"Enter age of client: ";
+      cin>>age;
+      cout<<"Enter risk tolerance of client: ";
+      cin>>risk;
+      cout<<"Enter assets of client: ";
+      cin>>assets;
     }
 };
 
-class stocks : protected Information, protected goals{
-  float stock_market_return_percentage;
-  float stocksReturn;
+class consultant:public client{
+  protected:
+    int time;
+    int monthly;
   public:
-  void calculator(){
-    stock_market_return_percentage = 10;
-    float initial_amount = (30 * salary)/100;
+    void getdata(){
 
-    // float final_amount = initial_amount * ((1 + stock_market_return_percentage) ** number_of_years);
-    cout<<"initial_amount: "<< salary <<"\n";
-    cout<<"stock_market_return_percentage: "<<stock_market_return_percentage <<"\n";
-    cout<<"number_of_years: "<<number_of_years<<"\n";
-    // cout<<"CALALALLA: "<<final_amount<<"\n";
-  }
-  
+      client::getdata();
+      cout<<"Enter time period: ";
+      cin>>time;
+      cout<<"Enter Monthly: ";
+      cin>>monthly;
+    }
 };
+class invest:public consultant
+{
+  protected:
+    int rate;
+  public:
+    void getdata()
+    {
+      consultant::getdata();
+      if(risk>=1 && risk<=3)
+      {
+        cout << "Based on your age of " << age 
+             << " and risk tolerance of " << risk 
+             << ", we recommend the following investment strategy:" << endl;
+          cout<<"invest in stocks"<<endl;
+          cout << "---------------------------------" << endl;
+        rate=5;
+      }
+      else if(risk>=4 && risk<=7)
+      {
+        cout << "Based on your age of " << age 
+             << " and risk tolerance of " << risk 
+             << ", we recommend the following investment strategy:" << endl;
+          cout<<"invest in stocks"<<endl;
+          cout << "---------------------------------" << endl;
+        rate=8;
+      }
+      else if(risk>=8 && risk<=10)
+      {
+        cout << "Based on your age of " << age 
+             << " and risk tolerance of " << risk 
+             << ", we recommend the following investment strategy:" << endl;
+          cout<<"invest in stocks"<<endl;
+          cout << "---------------------------------" << endl;
+        rate=12;
+      }
+      
+    }
+};
+class total:public invest{
 
-void main(){
+  
+  public:
+    long long new_asset;
+    void getdata()
+    {
+      invest::getdata();
+// Total amount = Principal * (1 + (Yearly interest rate/100)) ^ (Number of years) + (Monthly investment * ( 
+  // ((1 + (Yearly interest rate/100)) ^ (Number of years) - 1) / (Yearly interest rate/100) ))
+
+
+      new_asset = assets * pow(1 + (rate/100), time) + (monthly * ((pow(1 + (rate/100), time) - 1) / (rate/100))) ;
+      
+      // assets=assets+(assets*rate*time)/100;
+    }
+    void display()
+    {
+      cout<<"\nName of client: "<<name;
+      cout<<"\nAge of client: "<<age;
+      cout<<"\nRisk tolerance of client(1-10): "<<risk;
+      cout<<"\nNew Asset: "<<new_asset;
+      cout<<"\nRate: "<<rate;
+      cout<<"\nMonthly: "<<monthly;
+      cout<<"\nAssets of client: "<<assets;
+    }
+};
+int main()
+{
   clrscr();
-  Information client1;
-  client1.getInfo();
-  goals goal1;
-  goal1.getGoals();
-  if (goal1.goal == 1)
-  {
-      stocks StockObj;
-      StockObj.calculator();
-    
-  }
+  total t;
+  t.getdata();
+  t.display();
   getch();
+  return 0;
 }
